@@ -1,0 +1,35 @@
+{
+  "name": "10-4_le_chat_bot",
+  "version": "1.0.0",
+  "description": "Discord bot for more fun!",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js",
+    "deploy": "node deployCommands.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Flash1ce/10-4_le_chat_bot.git"
+  },
+  "keywords": [
+    "Discord",
+    "bot",
+    "10-4"
+  ],
+  "author": "Flashice",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Flash1ce/10-4_le_chat_bot/issues"
+  },
+  "homepage": "https://github.com/Flash1ce/10-4_le_chat_bot#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "mariadb": "^3.0.2",
+    "sequelize": "^6.26.0"
+  }
+}
