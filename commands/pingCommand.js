@@ -3,7 +3,7 @@
 const {SlashCommandBuilder} = require("discord.js");
 const {EmbedBuilder} = require("discord.js");
 
-module.exports = {
+exports.command = {
     data: new SlashCommandBuilder()
         .setName("ping")
         .setDescription("Replies with Pong!"),
