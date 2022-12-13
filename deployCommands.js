@@ -16,7 +16,7 @@ const deployCommands = () => {
 
     for (const file of commandFiles) {
         if (file !== "loadCommands.js") {
-            const command = require(`./commands/${file}`);
+            const command = require(`./commands/${file}`).command;
             commands.push(command.data.toJSON());
         }
     }

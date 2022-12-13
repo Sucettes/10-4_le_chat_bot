@@ -10,7 +10,7 @@ exports.load = async (client) => {
     const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith(".js"));
 
     for (const file of commandFiles) {
-        if (file !== 'loadCommands.js') {
+        if (file !== "loadCommands.js") {
             const filePath = path.join(commandsPath, file);
             const command = require(filePath).command;
             // Set a new item in the Collection with the key as the command name and the value as the exported module
