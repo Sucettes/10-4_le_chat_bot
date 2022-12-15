@@ -9,6 +9,8 @@ const {
     TextInputStyle,
 } = require("discord.js");
 
+const embedMsg = require("../../component/embedMessages");
+const randomValidators = require("../../includes/validations/randomCommands/randomValidators");
 
 exports.command = {
     data: new SlashCommandBuilder()
@@ -19,46 +21,62 @@ exports.command = {
                 .setDescription("The type of random result")
                 .setRequired(true)
                 .addChoices(
-                    { name: "Number", value: "NumberRandom" },
-                    { name: "User", value: "UserRandom" },
+                    {name: "Number", value: "NumberRandom"},
+                    {name: "User", value: "UserRandom"},
                 )),
     async execute(interaction) {
-        // select the right type.
-        switch (interaction.options.data[0].value) {
-            case "NumberRandom":
-                // todo : Add validation min need to be lower than max
-                // create radom number modal
-                const randomNumberModal = new ModalBuilder()
-                    .setCustomId("randomNumberModal")
-                    .setTitle("Number randomizer");
+        try {
+            // select the right type.
+            switch (interaction.options.data[0].value) {
+                case "NumberRandom":
+                    // create random number modal
+                    const randomNumberModal = new ModalBuilder()
+                        .setCustomId("randomNumberModal")
+                        .setTitle("Number randomizer");
 
-                // create min input
-                const minNumberInput = new TextInputBuilder()
-                    .setCustomId("minNumberInput")
-                    .setLabel("Minimum number")
-                    .setStyle(TextInputStyle.Short)
-                    .setRequired(true);
+                    // create min input
+                    const minNumberInput = new TextInputBuilder()
+                        .setCustomId("minNumberInput")
+                        .setLabel("Minimum number")
+                        .setStyle(TextInputStyle.Short)
+                        .setRequired(true)
+                        .setMinLength(1)
+                        .setMaxLength(10);
 
-                // create max input
-                const maxNumberInput = new TextInputBuilder()
-                    .setCustomId("maxNumberInput")
-                    .setLabel("Maximum number")
-                    .setStyle(TextInputStyle.Short)
-                    .setRequired(true);
+                    // create max input
+                    const maxNumberInput = new TextInputBuilder()
+                        .setCustomId("maxNumberInput")
+                        .setLabel("Maximum number")
+                        .setStyle(TextInputStyle.Short)
+                        .setRequired(true)
+                        .setMinLength(1)
+                        .setMaxLength(10);
 
-                // Action row
-                const firstActionRow = new ActionRowBuilder().addComponents(minNumberInput);
-                const secondActionRow = new ActionRowBuilder().addComponents(maxNumberInput);
+                    // Action row
+                    const firstActionRow = new ActionRowBuilder().addComponents(minNumberInput);
+                    const secondActionRow = new ActionRowBuilder().addComponents(maxNumberInput);
 
-                // Add input to modal
-                randomNumberModal.addComponents(firstActionRow, secondActionRow);
+                    // Add input to modal
+                    randomNumberModal.addComponents(firstActionRow, secondActionRow);
 
-                // Show modal
-                await interaction.showModal(randomNumberModal);
-                break;
-            case "UserRandom":
-                await interaction.reply("Random command");
-                break;
+                    // Show modal
+                    await interaction.showModal(randomNumberModal);
+                    break;
+                case "UserRandom":
+                    await interaction.reply({
+                        embeds: [
+                            await embedMsg.warningMsg("Warning!", "This functionality was not implemented, come back later!"),
+                        ],
+                    });
+                    break;
+            }
+        } catch (e) {
+            console.error(e);
+            await interaction.reply({
+                embeds: [
+                    await embedMsg.errorMsg("Error occurred!", "An error was occurred!"),
+                ],
+            });
         }
     },
 };
@@ -67,12 +85,41 @@ exports.onModalRandomNumberSubmit = async (interaction) => {
     const min = interaction.fields.getTextInputValue("minNumberInput");
     const max = interaction.fields.getTextInputValue("maxNumberInput");
 
-    const randomNumber = Math.floor(Math.random() * (+max - +min + 1)) + +min;
+    // validations and show error messages.
+    const minIsValid = randomValidators.minIsValid(min);
+    const maxIsValid = randomValidators.maxIsValid(max);
+    const minMaxIsValid = randomValidators.minIsLowerThanMax(min, max);
 
-    const resultEmbed = new EmbedBuilder()
-        .setColor(0x00ffcb)
-        .setTitle("Generated random number")
-        .setDescription(`The random number generated by ${interaction.user.username} between **${min}** and **${max}** is **${randomNumber}**.`);
+    if (minIsValid) {
+        await interaction.reply({
+            embeds: [
+                await embedMsg.errorMsg("Error occurred!", minIsValid),
+            ],
+        });
+    } else if (maxIsValid) {
+        await interaction.reply({
+            embeds: [
+                await embedMsg.errorMsg("Error occurred!", maxIsValid),
+            ],
+        });
+    } else if (minMaxIsValid) {
+        await interaction.reply({
+            embeds: [
+                await embedMsg.errorMsg("Error occurred!", minMaxIsValid),
+            ],
+        });
+    }
 
-    await interaction.reply({ embeds: [resultEmbed] });
+    // value is valid
+    if (!minIsValid && !maxIsValid && !minMaxIsValid) {
+        const randomNumber = Math.floor(Math.random() * (+max - +min + 1)) + +min;
+
+        const title = "Generated random number";
+        const desc = `The random number generated by ${interaction.user.username} between **${min}** and **${max}** is **${randomNumber}**.`;
+        await interaction.reply({
+            embeds: [
+                await embedMsg.infoMsg(title, desc),
+            ],
+        });
+    }
 };
