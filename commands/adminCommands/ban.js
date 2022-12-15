@@ -1,6 +1,7 @@
 const {
 	SlashCommandBuilder,
-	PermissionFlagsBits
+	PermissionFlagsBits,
+	EmbedBuilder
 } = require('discord.js');
 
 exports.command = {
@@ -19,6 +20,9 @@ exports.command = {
 				.setRequired(false))
 		.setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
 	async execute(interaction) {
+		const responseEmbed = new EmbedBuilder()
+			.setColor(0x00ffcb)
+
 		const member = interaction.options.getUser('target');
 		const reason = interaction.options.getString('reason');
 		let banOptions = {};
@@ -27,9 +31,15 @@ exports.command = {
 		}
 		interaction.guild.members.ban(member, banOptions)
 			.then(async () => {
-				await interaction.reply(`${member.username}#${member.discriminator} is now banned from the server !`);
-			}).catch(async () => {
-				await interaction.reply(`${member.username}#${member.discriminator} is already ban from the server !`);
+				responseEmbed.setDescription(`${member.username}#${member.discriminator} is now banned from the server !`);
+				await interaction.reply({ embeds: [responseEmbed] });
+			}).catch(async (err) => {
+				if (err.status == 403) {
+					responseEmbed.setDescription(`You are not allowed to ban this member !`);
+				} else {
+					responseEmbed.setDescription(`${member.username}#${member.discriminator} is already ban from the server !`);
+				}
+				await interaction.reply({ embeds: [responseEmbed] });
 			});
 	}
 }
