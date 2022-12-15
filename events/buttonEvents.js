@@ -1,14 +1,14 @@
 "use strict";
 
 const { Events } = require('discord.js');
-const DogsOrCats = require('../commands/dogsOrCats')
+const DogsOrCats = require('../commands/dogsOrCatsCommands/dogsOrCats')
 
 module.exports = {
-	name: Events.InteractionCreate,
+    name: Events.InteractionCreate,
     async execute(interaction) {
         if (!interaction.isButton()) return;
         if (interaction.customId === 'DoCCats' || interaction.customId === 'DoCDogs') {
             await DogsOrCats.onChoiceClick(interaction);
         }
-	},
+    },
 };
