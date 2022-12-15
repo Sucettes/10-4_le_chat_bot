@@ -1,7 +1,7 @@
 "use strict";
 
-const {Events} = require("discord.js");
-const RandomCommand = require("../commands/randomCommand");
+const { Events } = require("discord.js");
+const RandomCommand = require("../commands/randomCommands/random");
 
 module.exports = {
     name: Events.InteractionCreate,
