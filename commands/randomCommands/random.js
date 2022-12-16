@@ -25,58 +25,49 @@ exports.command = {
                     {name: "User", value: "UserRandom"},
                 )),
     async execute(interaction) {
-        try {
-            // select the right type.
-            switch (interaction.options.data[0].value) {
-                case "NumberRandom":
-                    // create random number modal
-                    const randomNumberModal = new ModalBuilder()
-                        .setCustomId("randomNumberModal")
-                        .setTitle("Number randomizer");
+        // select the right type.
+        switch (interaction.options.data[0].value) {
+            case "NumberRandom":
+                // create random number modal
+                const randomNumberModal = new ModalBuilder()
+                    .setCustomId("randomNumberModal")
+                    .setTitle("Number randomizer");
 
-                    // create min input
-                    const minNumberInput = new TextInputBuilder()
-                        .setCustomId("minNumberInput")
-                        .setLabel("Minimum number")
-                        .setStyle(TextInputStyle.Short)
-                        .setRequired(true)
-                        .setMinLength(1)
-                        .setMaxLength(10);
+                // create min input
+                const minNumberInput = new TextInputBuilder()
+                    .setCustomId("minNumberInput")
+                    .setLabel("Minimum number")
+                    .setStyle(TextInputStyle.Short)
+                    .setRequired(true)
+                    .setMinLength(1)
+                    .setMaxLength(10);
 
-                    // create max input
-                    const maxNumberInput = new TextInputBuilder()
-                        .setCustomId("maxNumberInput")
-                        .setLabel("Maximum number")
-                        .setStyle(TextInputStyle.Short)
-                        .setRequired(true)
-                        .setMinLength(1)
-                        .setMaxLength(10);
+                // create max input
+                const maxNumberInput = new TextInputBuilder()
+                    .setCustomId("maxNumberInput")
+                    .setLabel("Maximum number")
+                    .setStyle(TextInputStyle.Short)
+                    .setRequired(true)
+                    .setMinLength(1)
+                    .setMaxLength(10);
 
-                    // Action row
-                    const firstActionRow = new ActionRowBuilder().addComponents(minNumberInput);
-                    const secondActionRow = new ActionRowBuilder().addComponents(maxNumberInput);
+                // Action row
+                const firstActionRow = new ActionRowBuilder().addComponents(minNumberInput);
+                const secondActionRow = new ActionRowBuilder().addComponents(maxNumberInput);
 
-                    // Add input to modal
-                    randomNumberModal.addComponents(firstActionRow, secondActionRow);
+                // Add input to modal
+                randomNumberModal.addComponents(firstActionRow, secondActionRow);
 
-                    // Show modal
-                    await interaction.showModal(randomNumberModal);
-                    break;
-                case "UserRandom":
-                    await interaction.reply({
-                        embeds: [
-                            await embedMsg.warningMsg("Warning!", "This functionality was not implemented, come back later!"),
-                        ],
-                    });
-                    break;
-            }
-        } catch (e) {
-            console.error(e);
-            await interaction.reply({
-                embeds: [
-                    await embedMsg.errorMsg("Error occurred!", "An error was occurred!"),
-                ],
-            });
+                // Show modal
+                await interaction.showModal(randomNumberModal);
+                break;
+            case "UserRandom":
+                await interaction.reply({
+                    embeds: [
+                        await embedMsg.warningMsg("Warning!", "This functionality was not implemented, come back later!"),
+                    ],
+                });
+                break;
         }
     },
 };
