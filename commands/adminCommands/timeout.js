@@ -1,6 +1,7 @@
 const {
     SlashCommandBuilder,
-    PermissionFlagsBits
+    PermissionFlagsBits,
+    EmbedBuilder
 } = require('discord.js');
 
 exports.command = {
