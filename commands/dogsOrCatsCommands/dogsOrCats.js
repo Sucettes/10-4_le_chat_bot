@@ -2,11 +2,11 @@
 
 const {
     SlashCommandBuilder,
-    EmbedBuilder,
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
 } = require("discord.js");
+const embedMsg = require("../../component/embedMessages");
 
 exports.command = {
     data: new SlashCommandBuilder()
@@ -16,25 +16,22 @@ exports.command = {
         const row = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
-                .setCustomId('DoCDogs')
-                .setLabel('🐶 Dogs')
-                .setStyle(ButtonStyle.Primary),
+                    .setCustomId('DoCDogs')
+                    .setLabel('🐶 Dogs')
+                    .setStyle(ButtonStyle.Primary),
                 new ButtonBuilder()
-                .setCustomId('DoCCats')
-                .setLabel('🐱 Cats')
-                .setStyle(ButtonStyle.Secondary),
+                    .setCustomId('DoCCats')
+                    .setLabel('🐱 Cats')
+                    .setStyle(ButtonStyle.Secondary),
             );
-        const optionEmbed = new EmbedBuilder()
-            .setColor(0x00ffcb)
-            .setTitle('Choose an Option')
         await interaction.reply({
             ephemeral: true,
-            embeds: [optionEmbed],
+            embeds: [await embedMsg.infoMsg('🐶 OR 🐱', "Choose an option")],
             components: [row],
             fetchReply: true
         });
     },
-},
+}
 exports.onChoiceClick = async (interaction) => {
     let winStreak = 1;
     let choice;
@@ -49,12 +46,8 @@ exports.onChoiceClick = async (interaction) => {
         choice = "Dogs"
     }
     if (randNum == 0 && choice === 'Dogs' || randNum == 1 && choice === 'Cats') {
-        const resultEmbed = new EmbedBuilder()
-            .setColor(0x90ff33)
-            .setTitle('You won !')
-            .setDescription(`🔥 Win streak : ${winStreak} 🔥\nYour choice: ${choice}\nResult: ${choice}`)
         await interaction.update({
-            embeds: [resultEmbed]
+            embeds: [await embedMsg.successMsg("You won !", `🔥 Win streak : ${winStreak} 🔥\nYour choice: ${choice}\nResult: ${choice}`)]
         });
     } else {
         let result;
@@ -63,12 +56,8 @@ exports.onChoiceClick = async (interaction) => {
         } else {
             result = 'Cats'
         }
-        const resultEmbed = new EmbedBuilder()
-            .setColor(0xff0000)
-            .setTitle('You lost !')
-            .setDescription(`Your choice: ${choice}\nResult: ${result}`)
         await interaction.update({
-            embeds: [resultEmbed]
+            embeds: [await embedMsg.errorMsg("You lost !", `Your choice: ${choice}\nResult: ${result}`)]
         });
     }
 }
