@@ -131,3 +131,4 @@ dmypy.json
 .idea
 .env
 node_modules
+*.sqlite
