@@ -2,7 +2,7 @@
 
 require("dotenv").config();
 
-const {Client, GatewayIntentBits} = require("discord.js");
+const {Client, GatewayIntentBits, ActivityType} = require("discord.js");
 const db = require("./models/dbSetup");
 const client = new Client({
     intents: [
