@@ -3,7 +3,6 @@
 require("dotenv").config();
 
 const {Client, GatewayIntentBits, ActivityType} = require("discord.js");
-const db = require("./models/dbSetup");
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -12,10 +11,12 @@ const client = new Client({
         GatewayIntentBits.GuildMembers,
     ],
 });
-
 const commands = require("./commands/loadCommands");
 const events = require("./events/loadEvents");
 const {config} = require("dotenv");
+const db = require("./models/dbSetup");
+
+db.sequelize.sync().then(() => {});
 
 client.on("ready", async () => {
     client.user.setPresence({
