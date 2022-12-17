@@ -1,32 +1,43 @@
 "use strict";
 
-
-const {EmbedBuilder} = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 exports.errorMsg = async (title, desc) => {
-    return new EmbedBuilder()
+    let embed = new EmbedBuilder()
         .setColor("#ED4245")
-        .setTitle(title)
         .setDescription(desc);
+    if (title !== "") {
+        embed.setTitle(title);
+    }
+    return embed
 };
 
 exports.infoMsg = async (title, desc) => {
-    return new EmbedBuilder()
+    let embed = new EmbedBuilder()
         .setColor("#00FFCB")
-        .setTitle(title)
         .setDescription(desc);
+    if (title !== "") {
+        embed.setTitle(title);
+    }
+    return embed;
 };
 
 exports.warningMsg = async (title, desc) => {
-    return new EmbedBuilder()
+    let embed = new EmbedBuilder()
         .setColor("#FEE75C")
-        .setTitle(title)
         .setDescription(desc);
+    if (title !== "") {
+        embed.setTitle(title);
+    }
+    return embed;
 };
 
 exports.successMsg = async (title, desc) => {
-    return new EmbedBuilder()
+    let embed = new EmbedBuilder()
         .setColor("#57F287")
-        .setTitle(title)
         .setDescription(desc);
+    if (title !== "") {
+        embed.setTitle(title);
+    }
+    return embed;
 };
