@@ -28,6 +28,7 @@
     "nodemon": "^2.0.20"
   },
   "dependencies": {
+    "axios": "^1.2.1",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "mariadb": "^3.0.2",
