@@ -1,6 +1,6 @@
 "use strict";
 
-const {SlashCommandBuilder, EmbedBuilder} = require("discord.js");
+const {SlashCommandBuilder} = require("discord.js");
 const embedMsg = require("../../component/embedMessages");
 
 exports.command = {

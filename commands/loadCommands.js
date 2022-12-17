@@ -2,7 +2,7 @@
 
 const fs = require("node:fs"); // is used to read the commands
 const path = require("node:path");
-const { Collection } = require("discord.js");
+const {Collection} = require("discord.js");
 
 exports.load = async (client) => {
     client.commands = new Collection();
@@ -12,8 +12,9 @@ exports.load = async (client) => {
     const commandsDir = fs.readdirSync(commandsPath);
 
     commandsDir.forEach(dir => {
-        if (dir != "loadCommands.js") {
+        if (dir !== "loadCommands.js") {
             const commandFiles = fs.readdirSync(`${commandsPath}/${dir}`).filter(file => file.endsWith(".js"));
+
             for (const file of commandFiles) {
                 const filePath = path.join(`${commandsPath}/${dir}`, file);
                 const command = require(filePath).command;
