@@ -3,7 +3,6 @@
 const {
     SlashCommandBuilder,
     ModalBuilder,
-    EmbedBuilder,
     ActionRowBuilder,
     TextInputBuilder,
     TextInputStyle,
@@ -24,7 +23,7 @@ exports.command = {
                     {name: "Number", value: "NumberRandom"},
                     {name: "User", value: "UserRandom"},
                 )),
-    async execute(interaction) {
+    async execute(interaction, message) {
         // select the right type.
         switch (interaction.options.data[0].value) {
             case "NumberRandom":
@@ -62,9 +61,20 @@ exports.command = {
                 await interaction.showModal(randomNumberModal);
                 break;
             case "UserRandom":
+                // Users and bots
+                const members = (await interaction.guild.members.fetch()).map(m => m.user);
+
+                // Keep only users
+                const filteredMembers = members.filter(u => u.bot === false);
+
+                // Get randoms member in the array.
+                const member = filteredMembers[Math.floor(Math.random() * filteredMembers.length)];
+
+                const memberStr = `${member.username}#${member.discriminator}`;
+
                 await interaction.reply({
                     embeds: [
-                        await embedMsg.warningMsg("Warning!", "This functionality was not implemented, come back later!"),
+                        await embedMsg.successMsg("Random user !", `The member who was drawn is **${memberStr}** !`),
                     ],
                 });
                 break;

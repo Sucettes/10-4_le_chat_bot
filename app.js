@@ -3,7 +3,14 @@
 require("dotenv").config();
 const {Client, GatewayIntentBits} = require("discord.js");
 const db = require("./models/dbSetup");
-const client = new Client({intents: [GatewayIntentBits.Guilds]});
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMembers,
+    ],
+});
 const commands = require("./commands/loadCommands");
 const events = require("./events/loadEvents");
 
