@@ -14,16 +14,16 @@ const randomValidators = require("../../includes/validations/randomCommands/rand
 exports.command = {
     data: new SlashCommandBuilder()
         .setName("random")
-        .setDescription("Random generator (User, Number...)")
+        .setDescription("Generate user or random number.")
         .addStringOption(option =>
             option.setName("type")
-                .setDescription("The type of random result")
+                .setDescription("Choose what you want to randomise.")
                 .setRequired(true)
                 .addChoices(
                     {name: "Number", value: "NumberRandom"},
                     {name: "User", value: "UserRandom"},
                 )),
-    async execute(interaction, message) {
+    async execute(interaction) {
         // select the right type.
         switch (interaction.options.data[0].value) {
             case "NumberRandom":
