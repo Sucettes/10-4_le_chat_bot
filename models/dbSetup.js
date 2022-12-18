@@ -1,35 +1,21 @@
 "use strict";
 
-
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.USER,
-    process.env.PASSWORD,
-    {
-        host: process.env.HOST,
-        port: process.env.PORT,
-        dialect: process.env.DIALECT,
-        define: {
-            timestamps: false,
-            freezeTableName: true,
-        },
-        logging: false,
-        pool: {
-            max: 5,
-            min: 0,
-            acquire: 30000,
-            idle: 10000,
-        },
+const sequelize = new Sequelize({
+    dialect: process.env.DIALECT,
+    storage: process.env.DB_PATH,
+    define: {
+        timestamps: false,
+        freezeTableName: true,
     },
-);
-
+    logging: false,
+});
 const db = {};
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-// todo : ....
+db.scores = require("./scoreModel")(sequelize, Sequelize);
 
 module.exports = db;

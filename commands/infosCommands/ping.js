@@ -1,17 +1,21 @@
 "use strict";
 
-const {SlashCommandBuilder, EmbedBuilder} = require("discord.js");
+const {SlashCommandBuilder} = require("discord.js");
+const embedMsg = require("../../component/embedMessages");
 
 exports.command = {
     data: new SlashCommandBuilder()
         .setName("ping")
         .setDescription("Replies with Pong!"),
     async execute(interaction) {
-        const pingEmbed = new EmbedBuilder()
-            .setColor(0x00ffcb)
-            .setTitle("Pong")
-            .setDescription(`Bot latency :\xa0\xa0 **${interaction.client.ws.ping}**ms`);
-
-        await interaction.reply({embeds: [pingEmbed]});
+        try {
+            await interaction.reply({
+                embeds: [
+                    await embedMsg.infoMsg("Pong!", `Bot latency :\xa0\xa0 **${interaction.client.ws.ping}**ms`),
+                ],
+            });
+        } catch (e) {
+            console.error(e);
+        }
     },
 };

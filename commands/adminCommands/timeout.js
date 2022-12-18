@@ -2,11 +2,12 @@ const {
     SlashCommandBuilder,
     PermissionFlagsBits
 } = require('discord.js');
+const embedMsg = require("../../component/embedMessages");
 
 exports.command = {
     data: new SlashCommandBuilder()
         .setName('timeout')
-        .setDescription('Select a member to timeout')
+        .setDescription('Select a member to timeout.')
         .addUserOption(option =>
             option
                 .setName('target')
@@ -29,19 +30,27 @@ exports.command = {
         if (member) {
             if (interaction.options.getBoolean('reset') == true) {
                 member.timeout(null).then(async () => {
-                    await interaction.reply(`${member.user.username}#${member.user.discriminator}'s timeout is now removed !`);
-                }).catch(async () => {
-                    await interaction.reply(`${member.user.username}#${member.user.discriminator} isn't timeout !`);
+                    await interaction.reply({ embeds: [await embedMsg.successMsg('', `${member.user.username}#${member.user.discriminator}'s timeout is now removed !`)] });
+                }).catch(async (err) => {
+                    if (err.status == 403) {
+                        await interaction.reply({ embeds: [await embedMsg.errorMsg('', `You are not allowed to change the timeout status of this member !`)] });
+                    } else {
+                        await interaction.reply({ embeds: [await embedMsg.errorMsg('', `${member.user.username}#${member.user.discriminator} isn't timeout !`)] });
+                    }
                 });
             } else {
                 member.timeout(duration * 1000).then(async () => {
-                    await interaction.reply(`${member.user.username}#${member.user.discriminator} is now timeout for ${duration} seconds !`);
-                }).catch(async () => {
-                    await interaction.reply(`${member.user.username}#${member.user.discriminator} is already timeout from the server !`);
+                    await interaction.reply({ embeds: [await embedMsg.successMsg('', `${member.user.username}#${member.user.discriminator} is now timeout for ${duration} seconds !`)] });
+                }).catch(async (err) => {
+                    if (err.status == 403) {
+                        await interaction.reply({ embeds: [await embedMsg.errorMsg('', `You are not allowed to change the timeout status of this member !`)] });
+                    } else {
+                        await interaction.reply({ embeds: [await embedMsg.errorMsg('', `${member.user.username}#${member.user.discriminator} is already timeout from the server !`)] });
+                    }
                 });
             }
         } else {
-            await interaction.reply(`The user specified is not in the server`);
+            await interaction.reply({ embeds: [await embedMsg.errorMsg('', `The user specified is not in the server`)] });
         }
     }
 }

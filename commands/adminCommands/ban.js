@@ -2,6 +2,7 @@ const {
 	SlashCommandBuilder,
 	PermissionFlagsBits
 } = require('discord.js');
+const embedMsg = require("../../component/embedMessages");
 
 exports.command = {
 	data: new SlashCommandBuilder()
@@ -27,9 +28,13 @@ exports.command = {
 		}
 		interaction.guild.members.ban(member, banOptions)
 			.then(async () => {
-				await interaction.reply(`${member.username}#${member.discriminator} is now banned from the server !`);
-			}).catch(async () => {
-				await interaction.reply(`${member.username}#${member.discriminator} is already ban from the server !`);
+				await interaction.reply({ embeds: [await embedMsg.successMsg('', `${member.username}#${member.discriminator} is now banned from the server !`)] });
+			}).catch(async (err) => {
+				if (err.status == 403) {
+					await interaction.reply({ embeds: [await embedMsg.errorMsg('', `You are not allowed to ban this member !`)] });
+				} else {
+					await interaction.reply({ embeds: [await embedMsg.errorMsg('', `${member.username}#${member.discriminator} is already ban from the server !`)] });
+				}
 			});
 	}
 }

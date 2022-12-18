@@ -2,6 +2,7 @@ const {
     SlashCommandBuilder,
     PermissionFlagsBits
 } = require('discord.js');
+const embedMsg = require("../../component/embedMessages");
 
 exports.command = {
     data: new SlashCommandBuilder()
@@ -17,9 +18,13 @@ exports.command = {
         const member = interaction.options.getUser('target');
         interaction.guild.members.kick(member)
             .then(async () => {
-                await interaction.reply(`${member.username}#${member.discriminator} has been kick from the server !`);
-            }).catch(async () => {
-                await interaction.reply(`${member.username}#${member.discriminator} is not on the server !`);
+                await interaction.reply({ embeds: [await embedMsg.successMsg('', `${member.username}#${member.discriminator} has been kick from the server !`)] });
+            }).catch(async (err) => {
+                if (err.status == 403) {
+                    await interaction.reply({ embeds: [await embedMsg.errorMsg('', `You are not allowed to kick this member !`)] });
+                } else {
+                    await interaction.reply({ embeds: [await embedMsg.errorMsg('', `${member.username}#${member.discriminator} is not on the server !`)] });
+                }
             });
     }
 }
