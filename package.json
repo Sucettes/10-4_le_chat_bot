@@ -4,7 +4,7 @@
   "description": "Discord bot for more fun!",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha appTest.js",
     "start": "node app.js",
     "startDev": "nodemon app.js",
     "deploy": "node deployCommands.js"
@@ -29,9 +29,11 @@
   },
   "dependencies": {
     "axios": "^1.2.1",
+    "chai": "^4.3.7",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "mariadb": "^3.0.2",
+    "mocha": "^10.2.0",
     "sequelize": "^6.26.0",
     "sqlite3": "^5.1.4"
   }
