@@ -7,7 +7,8 @@
     "test": "mocha appTest.js",
     "start": "node app.js",
     "startDev": "nodemon app.js",
-    "deploy": "node deployCommands.js"
+    "deploy": "node deployCommands.js",
+    "codeReview": "node codeReviewer.js"
   },
   "repository": {
     "type": "git",
