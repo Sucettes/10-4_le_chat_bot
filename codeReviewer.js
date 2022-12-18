@@ -1,31 +1,31 @@
-const fs = require('fs');
+"use strict";
+
+const fs = require("fs");
+
 const blackList = ["/node_modules", "/.git"]
-console.log(verifyJSStructure()); // Affiche 'true'
+const jsFiles = getAllFiles(__dirname);
+console.clear();
+verifyJSStructure();
 
 function verifyJSStructure() {
-    const jsFiles = getAllFiles(__dirname);
     jsFiles.forEach(file => {
         fs.readFile(file, 'utf8', (err, data) => {
             if (!data.startsWith('"use strict";')) {
                 const splittedRoute = file.split("/");
-                console.error(`\x1b[33m${splittedRoute[splittedRoute.length - 1]}:1 does not have a "use strict;"\x1b[0m`);
-                return false;
+                console.warn(`\x1b[33m${splittedRoute[splittedRoute.length - 1]}:1 does not have a "use strict";\x1b[0m`);
             }
 
             // Validate single quote
-            if (!validateDoubleQuotes(data)) {
+            let foundSingleQuotes = validateDoubleQuotes(data);
+            if (foundSingleQuotes != -1) {
                 const splittedRoute = file.split("/");
-                console.error(`\x1b[33m${splittedRoute[splittedRoute.length - 1]}: single quote detected !\x1b[0m`);
-                return "Single Quote Detected";
+                foundSingleQuotes.forEach(fsq => {
+                    console.warn(`\x1b[33m${splittedRoute[splittedRoute.length - 1]}:${fsq} single quote detected\x1b[0m`);
+                });
             }
-
-            if (validateEnding(data, file)) {
-                console.log('e');
-            }
-            if ()
+            validateEnding(data, file)
         });
     });
-    return "Completed";
 }
 
 function getAllFiles(dir) {
@@ -52,18 +52,20 @@ function getAllFiles(dir) {
 }
 
 function validateDoubleQuotes(code) {
-    // Use a regular expression to match string literals that use single quotes
-    // This regular expression looks for single quotes that are not preceded by a backslash (\)
-    // This allows us to ignore single quotes that are escaped within a string literal
     const singleQuoteStrings = code.match(/'(?:[^'\\]|\\.)*'/g);
-
-    // If there are any single quote strings, return false
     if (singleQuoteStrings) {
-        return false;
+        let arrayLines = new Array();
+        singleQuoteStrings.forEach(sqs => {
+            const lines = code.split("\n");
+            for (let i = 0; i < lines.length; i++) {
+                if (lines[i].includes(sqs)) {
+                    arrayLines.push(i + 1);
+                }
+            }
+        });
+        return arrayLines;
     }
-
-    // Otherwise, return true
-    return true;
+    return -1;
 }
 
 function validateEnding(data, file) {
@@ -113,9 +115,8 @@ function validateEnding(data, file) {
         if (!line.trim().endsWith(';')) {
             if (!lines[i - 1].trim().endsWith("{")) {
                 const splittedRoute = file.split("/");
-                console.error(`\x1b[33m${splittedRoute[splittedRoute.length - 1]}:${i + 1} does not end with a semicolon\x1b[0m`);
+                console.warn(`\x1b[33m${splittedRoute[splittedRoute.length - 1]}:${i + 1} does not end with a semicolon\x1b[0m`);
             }
         }
-
     }
 }
