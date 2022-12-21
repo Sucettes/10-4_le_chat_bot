@@ -3,15 +3,15 @@
 const {SlashCommandBuilder, PermissionFlagsBits} = require("discord.js");
 const embedMsg = require("../../component/embedMessages");
 const MsgPriority = require("../../includes/enums/MsgPriority").MsgPriority;
-
+const alertTxt = require("../../includes/txtContent/en/contentTxt.json").alerts;
 
 exports.command = {
     data: new SlashCommandBuilder()
-        .setName("alert")
-        .setDescription("Allows you to send a message that is more visible to others.")
+        .setName(alertTxt.alertCommandName)
+        .setDescription(alertTxt.alertCommandDesc)
         .addStringOption(option =>
-            option.setName("priority")
-                .setDescription("priority level")
+            option.setName(alertTxt.alertCommandPrioName)
+                .setDescription(alertTxt.alertCommandPrioDesc)
                 .setRequired(true)
                 .addChoices(
                     {name: "important", value: MsgPriority.Important},
@@ -20,13 +20,13 @@ exports.command = {
                     {name: "info", value: MsgPriority.Info},
                 ),
         )
-        .addStringOption(option =>
-            option.setName("title")
-                .setDescription("title")
+        .addStringOption(optTitle =>
+            optTitle.setName(alertTxt.alertCommandOpt.titleName)
+                .setDescription(alertTxt.alertCommandOpt.titleDesc)
                 .setRequired(true))
-        .addStringOption(option =>
-            option.setName("content")
-                .setDescription("Message to sent")
+        .addStringOption(optContent =>
+            optContent.setName(alertTxt.alertCommandOpt.contentName)
+                .setDescription(alertTxt.alertCommandOpt.contentDesc)
                 .setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.EmbedLinks),
     async execute(interaction) {

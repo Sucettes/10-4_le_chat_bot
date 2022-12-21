@@ -1,0 +1,14 @@
+{
+  "alerts": {
+    "alertCommandDesc": "Allows you to send a message that is more visible to others.",
+    "alertCommandName": "alert",
+    "alertCommandPrioName": "priority",
+    "alertCommandPrioDesc": "priority level",
+    "alertCommandOpt": {
+      "titleName": "title",
+      "titleDesc": "title",
+      "contentName": "content",
+      "contentDesc": "Message to sent"
+    }
+  }
+}
