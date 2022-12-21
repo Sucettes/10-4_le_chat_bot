@@ -1,7 +1,7 @@
 {
   "alerts": {
-    "alertCommandDesc": "Allows you to send a message that is more visible to others.",
     "alertCommandName": "alert",
+    "alertCommandDesc": "Allows you to send a message that is more visible to others.",
     "alertCommandPrioName": "priority",
     "alertCommandPrioDesc": "priority level",
     "alertCommandOpt": {
@@ -9,6 +9,23 @@
       "titleDesc": "title",
       "contentName": "content",
       "contentDesc": "Message to sent"
+    }
+  },
+  "random": {
+    "randomCommandName": "random",
+    "randomCommandDesc": "Generate user or random number.",
+    "randomOpt": {
+      "typeName": "type",
+      "typeDesc": "Choose what you want to randomise."
+    },
+    "numberRandom": {
+      "titleModal": "Number randomizer",
+      "minInputLbl": "Minimum number",
+      "maxInputLbl": "Maximum number",
+      "successTitle": "Generated random number"
+    },
+    "userRandom": {
+      "successTitle": "Random user !"
     }
   }
 }
