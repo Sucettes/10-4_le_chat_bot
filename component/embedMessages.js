@@ -1,6 +1,7 @@
 "use strict";
 
-const { EmbedBuilder } = require("discord.js");
+const {EmbedBuilder} = require("discord.js");
+const MsgPriority = require("../includes/enums/MsgPriority").MsgPriority;
 
 exports.errorMsg = async (title, desc) => {
     let embed = new EmbedBuilder()
@@ -9,7 +10,7 @@ exports.errorMsg = async (title, desc) => {
     if (title !== "") {
         embed.setTitle(title);
     }
-    return embed
+    return embed;
 };
 
 exports.infoMsg = async (title, desc) => {
@@ -39,5 +40,36 @@ exports.successMsg = async (title, desc) => {
     if (title !== "") {
         embed.setTitle(title);
     }
+    return embed;
+};
+
+exports.alertsMsg = async (priority, title = priority.toString(), description = "", user) => {
+    let embed = new EmbedBuilder()
+        .setTitle(title)
+        .setTimestamp();
+
+    switch (priority) {
+        case MsgPriority.Important:
+            embed.setColor("#ED4245");
+            embed.setDescription(`@everyone ${description}`);
+            break;
+        case MsgPriority.Medium:
+            embed.setColor("#FEE75C");
+            embed.setDescription(`@everyone ${description}`);
+            break;
+        case MsgPriority.Low:
+            embed.setColor("#57F287")
+                .setDescription(description);
+            break;
+        case MsgPriority.Info:
+            embed.setColor("#00FFCB")
+                .setDescription(description);
+            break;
+    }
+
+    if (user) {
+        embed.setFooter({text: user});
+    }
+
     return embed;
 };
