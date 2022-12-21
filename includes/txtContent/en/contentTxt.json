@@ -26,6 +26,10 @@
     },
     "userRandom": {
       "successTitle": "Random user !"
+    },
+    "errorMsg": {
+      "minMaxInvalid": "Values must be between 1 and 10 characters and must be numbers!",
+      "minLessThanMax": "Values minimum, must be less than maximum"
     }
   }
 }
