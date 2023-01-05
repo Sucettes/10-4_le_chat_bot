@@ -1,21 +1,22 @@
 "use strict";
 
+const errorTxt = require("../../txtContent/en/contentTxt.json").random;
 const isNumberRegex = new RegExp("^[0-9]{1,10}$");
 
 const randomValidators = {
     minIsValid(min) {
         if (!isNumberRegex.test(min)) {
-            return "Values must be between 1 and 10 characters and must be numbers!";
+            return errorTxt.errorMsg.minMaxInvalid;
         }
     },
     maxIsValid(max) {
         if (!isNumberRegex.test(max)) {
-            return "Values must be between 1 and 10 characters and must be numbers!";
+            return errorTxt.errorMsg.minMaxInvalid;
         }
     },
     minIsLowerThanMax(min, max) {
         if (min >= max) {
-            return "Values minimum, must be less than maximum";
+            return errorTxt.errorMsg.minLessThanMax;
         }
     },
 };
